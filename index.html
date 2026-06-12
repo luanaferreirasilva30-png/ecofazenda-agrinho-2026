@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFazenda: O Desafio Sustentável</title>
+    <style>
+        /* Cores originais do projeto */
+        :root {
+            --primary: #2e7d32;         /* Verde escuro */
+            --primary-light: #4caf50;   /* Verde claro original para a barra lateral */
+            --danger: #d32f2f;          /* Vermelho */
+            --dark: #333333;            /* Cor do texto principal */
+            --light: #f5f5f5;           /* Fundo dos painéis */
+            --bg-game: #e8f5e9;         /* Fundo da página (Verde folha suave) */
+            --accent: #0288d1;          /* Azul de destaque para os grãos */
+            --shop-orange: #ff9800;     /* Laranja original da loja */
+            --shop-orange-hover: #e65100; /* Laranja escuro para o hover */
+            --booster-purple: #7b1fa2;  /* Roxo para a seção de boosters */
+            --booster-purple-hover: #4a148c;
+            --mission-blue: #1565c0;    /* Azul para os contratos */
+            --text-on-primary: #ffffff;
+            --text-on-light: #333333;
+            --carbon-grey: #546e7a;     /* Cor para a seção de carbono */
+        }
+
+        /* Cores para o modo de Alto Contraste / Daltonismo */
+        .high-contrast {
+            --primary: #000000;
+            --primary-light: #1a1a1a;
+            --danger: #d50000;
+            --dark: #ffffff;
+            --light: #111111;
+            --bg-game: #222222;
+            --accent: #2962ff;
+            --shop-orange: #ffab00;
+            --shop-orange-hover: #ff6d00;
+            --booster-purple: #aa00ff;
+            --booster-purple-hover: #d500f9;
+            --mission-blue: #00c853;
+            --text-on-primary: #ffffff;
+            --text-on-light: #ffffff;
+            --carbon-grey: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-game);
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Layout em duas colunas para o jogo e a barra lateral */
+        .main-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            align-items: stretch;
+            position: relative;
+        }
+
+        /* Barra de Acessibilidade Flutuante Externa */
+        .floating-accessibility-bar {
+            position: absolute;
+            right: -175px; 
+            top: 0;
+            width: 155px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+        .high-contrast .floating-accessibility-bar {
+            background: #111111;
+            border: 2px solid white;
+        }
+        .accessibility-title {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #555;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .high-contrast .accessibility-title {
+            color: white;
+        }
+        .accessibility-buttons {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+        }
+        .btn-access {
+            background-color: #e0e0e0;
+            color: #333333;
+            border: none;
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: none;
+            text-align: center;
+            flex: 1;
+        }
+        .high-contrast .btn-access {
+            background-color: #ffffff;
+            color: #000000;
+        }
+        .btn-access:hover {
+            opacity: 0.9;
+        }
+
+        .game-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .high-contrast .game-container {
+            background: #000000;
+            border: 2px solid white;
+        }
+
+        /* Painel Lateral Dinâmico */
+        .sidebar-container {
+            background-color: var(--primary-light);
+            width: 340px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .high-contrast .sidebar-container {
+            border: 2px solid white;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            max-height: 520px;
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .high-contrast h1 {
+            color: white;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--text-on-primary);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+            padding-bottom: 10px;
+        }
+
+        .shop-section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            margin: 15px 0 8px 0;
+            padding-bottom: 3px;
+            border-bottom: 1px dashed rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+            color: var(--text-on-light);
+        }
+        .high-contrast .status-panel {
+            border: 1px solid white;
+        }
+
+        .status-item {
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .farm-field-good {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: #f1f8e9;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed var(--primary);
+        }
+        .high-contrast .farm-field-good {
+            background: #111111;
+            border: 1px dashed white;
+        }
+
+        .progress-bar-container {
+            background-color: #e0e0e0;
+            border-radius: 6px;
+            height: 12px;
+            width: 100%;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 100%;
+            transition: width 0.5s ease-in-out, background-color 0.3s ease;
+        }
+
+        .soil-good { background-color: var(--primary); }
+        .soil-bad { 
+            background-color: var(--danger); 
+            animation: pulse 1.5s infinite;
+        }
+        .high-contrast .soil-good { background-color: #00c853; }
+
+        .log-box {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            height: 130px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            border-left: 5px solid var(--primary);
+        }
+        .high-contrast .log-box {
+            background: #111111;
+            color: #ffffff;
+            border: 1px solid white;
+            border-left: 5px solid white;
+        }
+
+        .log-box::-webkit-scrollbar { width: 6px; }
+        .log-box::-webkit-scrollbar-thumb { background: #7f8c8d; border-radius: 3px; }
+
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
+
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            color: var(--text-on-primary);
+            border: none;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s ease;
+            text-align: left;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+        }
+        .high-contrast button {
+            border: 1px solid white;
+        }
+
+        .choices-container button { background-color: var(--primary); }
+        .choices-container button:hover { background-color: #1b5e20; transform: translateY(-1px); }
+
+        .btn-grain { background-color: var(--accent) !important; }
+        .btn-grain:hover { background-color: #01579b !important; }
+
+        /* Botões da Loja (Upgrades) */
+        .btn-shop { 
+            background-color: var(--shop-orange); 
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .btn-shop:hover:not(:disabled) { background-color: var(--shop-orange-hover); transform: translateY(-1px); }
+        .btn-shop .price { font-size: 0.85rem; color: #fff3e0; font-weight: bold; }
+
+        /* Botões de Boosters */
+        .btn-booster {
+            background-color: var(--booster-purple);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .btn-booster:hover:not(:disabled) { background-color: var(--booster-purple-hover); transform: translateY(-1px); }
+        .btn-booster .price { font-size: 0.85rem; color: #f3e5f5; font-weight: bold; }
+
+        /* Botão de Emergência */
+        .btn-emergency {
+            background-color: var(--danger) !important;
+            border: 2px solid white !important;
+            animation: pulse 2s infinite;
+        }
+        .btn-emergency:hover { background-color: #b71c1c !important; }
+
+        /* Botões de Contrato */
+        .mission-card {
+            background: white;
+            color: #333333;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 5px solid var(--mission-blue);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 0.9rem;
+        }
+        .high-contrast .mission-card {
+            background: #111111;
+            color: #ffffff;
+            border: 1px solid white;
+        }
+        .btn-mission-action {
+            background-color: var(--mission-blue);
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: 8px;
+            width: 100%;
+        }
+        .btn-mission-action:hover { background-color: #0d47a1; }
+
+        /* Sistema de Abas Inferiores */
+        .tab-navigation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: auto;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 15px;
+        }
+        .btn-tab {
+            background-color: rgba(0,0,0,0.2);
+            text-align: center;
+            padding: 10px;
+            font-size: 0.95rem;
+            color: white;
+        }
+        .btn-tab.active {
+            background-color: white;
+            color: var(--primary);
+        }
+        .high-contrast .btn-tab.active {
+            background-color: white;
+            color: black;
+        }
+
+        button:disabled {
+            background-color: #c8e6c9 !important;
+            color: #388e3c !important;
+            cursor: not-allowed;
+            border: 1px dashed #388e3c;
+            opacity: 0.7;
+        }
+        .high-contrast button:disabled {
+            background-color: #222222 !important;
+            color: #777777 !important;
+            border: 1px dashed #777777;
+        }
+
+        .danger-alert { color: #ffcdd2; background: var(--danger); padding: 2px 6px; border-radius: 4px; font-weight: bold; display: inline-block; }
+        .success-alert { color: #e8f5e9; background: var(--primary); padding: 2px 6px; border-radius: 4px; font-weight: bold; display: inline-block; }
+        .booster-alert { color: #f3e5f5; background: var(--booster-purple); padding: 2px 6px; border-radius: 4px; font-weight: bold; display: inline-block; }
+        .carbon-alert { color: #ffffff; background: var(--carbon-grey); padding: 2px 6px; border-radius: 4px; font-weight: bold; display: inline-block; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        
+        @media (max-width: 1200px) {
+            .main-wrapper { flex-direction: column; }
+            .sidebar-container { width: 100%; }
+            .floating-accessibility-bar { position: static; width: 100%; margin-bottom: 10px; flex-direction: row; justify-content: space-between; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    
+    <div class="floating-accessibility-bar">
+        <div class="accessibility-title">Acessibilidade</div>
+        <div class="accessibility-buttons">
+            <button class="btn-access" onclick="changeFontSize(0.1)" title="Aumentar Fonte">A+</button>
+            <button class="btn-access" onclick="changeFontSize(-0.1)" title="Diminuir Fonte">A-</button>
+            <button class="btn-access" onclick="toggleContrast()" title="Mudar Contraste">🌓</button>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <h1>EcoFazenda 🌾</h1>
+        
+        <div id="farm-field" class="farm-field-good">
+            <span id="farm-crop">🌱</span>
+        </div>
+
+        <div class="status-panel" id="status-container">
+            <div class="status-item">📅 Tempo: <span id="months">1</span>º Mês</div>
+            <div class="status-item">💰 Moedas: $<span id="money">100</span></div> 
+            <div class="status-item">📦 Produção Base: <span id="production">10</span> toneladas</div>
+            <div class="status-item">
+                🌱 Saúde do Solo: <span id="soil-text">100%</span>
+                <div class="progress-bar-container">
+                    <div id="soil-bar" class="progress-bar soil-good" style="width: 100%;"></div>
+                </div>
+            </div>
+            <div class="status-item" style="grid-column: span 2; margin-top: 5px; font-weight: bold; color: #546e7a;">
+                💨 Pegada de Carbono Acumulada: <span id="carbon-text">0 kg CO₂</span>
+            </div>
+            <div class="status-item" style="grid-column: span 2; margin-top: 5px; font-weight: bold; color: var(--primary);">
+                🏢 Ocupação do Celeiro: <span id="barn-capacity-text">0 / 300 t</span>
+            </div>
+            <div class="status-item" style="grid-column: span 2; font-size: 0.85rem; color: #512da8; font-weight: bold;" id="boosters-panel-text">
+                ⚡ Boosters Ativos: Nenhum
+            </div>
+            <div class="status-item" style="grid-column: span 2; margin-top: 2px; font-size: 0.9rem; border-top: 1px dashed #ccc; padding-top: 5px;">
+                🎒 Seu Estoque: <span id="stock-text">Soja: 0 t | Milho: 0 t | Trigo: 0 t | Arroz: 0 t | Café: 0 t</span>
+            </div>
+        </div>
+
+        <div class="log-box" id="log">
+            <div>[Mês 1] Bem-vindo! Selecione um cultivo e gerencie seu solo, emissões de carbono e contratos com responsabilidade socioambiental!</div>
+        </div>
+
+        <div class="step-title" id="step-instruction">Passo 1: Escolha a Cultura para Plantar</div>
+        <div class="choices-container" id="choices-box"></div>
+    </div>
+
+    <div class="sidebar-container">
+        <div class="sidebar-content" id="sidebar-dynamic-content">
+            </div>
+
+        <div class="tab-navigation">
+            <button class="btn-tab active" id="tab-shop" onclick="switchTab('shop')">🛒 Loja</button>
+            <button class="btn-tab" id="tab-missions" onclick="switchTab('missions')">🚢 Contratos</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let months = 1;
+    let money = 100; 
+    let soilHealth = 100;
+    let baseProduction = 10;
+    let carbonEmissions = 0; 
+    
+    let selectedGrain = ""; 
+    let monthsSinceLastGrainChoice = 0; 
+    let acumuladoConvencional = 0; 
+    let techProfitBonus = 1.0; 
+    let currentTab = 'shop'; 
+    let currentFontSize = 1.0; 
+
+    let barnLevel = 0;
+    let maxBarnCapacity = 300;
+
+    let grainStock = { Soja: 0, Milho: 0, Trigo: 0, Arroz: 0, Café: 0 };
+
+    let availableMissions = [];
+    let activeMission = null; 
+
+    let activeBoosters = {
+        marketDay: 0,    
+        bottomlessSilo: 0, 
+        infiniteWell: 0,   
+        luckySeed: 0      
+    };
+
+    let upgrades = {
+        barn: { level: 0, maxLevel: 3, prices: [400, 900, 1600], capacities: [380, 440, 500], title: "Expansão do Celeiro", desc: "Aumenta o limite máximo permanente de armazenamento." },
+        tools: { purchased: false, price: 1000, title: "Ferramentas Avançadas", desc: "Aumenta a produção base (+4 toneladas) e aumenta o valor de venda permanentemente." },
+        irrigation: { purchased: false, price: 1800, title: "Pivô Central de Irrigação", desc: "Reduz perdas por seca em 50% e aumenta o valor de venda permanentemente." },
+        greenhouse: { purchased: false, price: 2500, title: "Estufa Tecnológica", desc: "Reduz perdas por pragas em 50% e aumenta o valor de venda permanentemente." },
+        agrotech: { purchased: false, price: 3200, title: "Investimento Agrotech", desc: "Imunidade contra eventos de seca e reduz custos trimestrais permanentemente." }
+    };
+
+    let boostersDef = {
+        marketDay: { price: 150, duration: 6, title: "⚡ Dia de Feira", desc: "Aumenta o preço de venda de todas as culturas em 25%." },
+        bottomlessSilo: { price: 200, duration: 5, title: "⚡ Silo Sem Fundo", desc: "Expande a capacidade do celeiro temporariamente em +150 toneladas." },
+        infiniteWell: { price: 100, duration: 8, title: "⚡ Poço Infinito", desc: "Garante água livre reduzindo os custos de manutenção trimestral pela metade." },
+        luckySeed: { price: 50, duration: 10, title: "⚡ Semente de Sorte", desc: "Dá uma chance de 10% de colher o dobro de toneladas a cada colheita realizada." }
+    };
+
+    const monthsEl = document.getElementById('months');
+    const moneyEl = document.getElementById('money');
+    const productionEl = document.getElementById('production');
+    const soilTextEl = document.getElementById('soil-text');
+    const soilBarEl = document.getElementById('soil-bar');
+    const carbonTextEl = document.getElementById('carbon-text'); 
+    const stockTextEl = document.getElementById('stock-text');
+    const barnCapacityTextEl = document.getElementById('barn-capacity-text');
+    const boostersPanelText = document.getElementById('boosters-panel-text');
+    const logEl = document.getElementById('log');
+    const choicesBox = document.getElementById('choices-box');
+    const stepInstruction = document.getElementById('step-instruction');
+    const farmCropEl = document.getElementById('farm-crop');
+    const sidebarDynamicContent = document.getElementById('sidebar-dynamic-content');
+
+    function changeFontSize(modifier) {
+        currentFontSize += modifier;
+        if (currentFontSize < 0.8) currentFontSize = 0.8;
+        if (currentFontSize > 1.4) currentFontSize = 1.4;
+        document.documentElement.style.fontSize = `${currentFontSize * 100}%`;
+    }
+
+    function toggleContrast() {
+        document.body.classList.toggle('high-contrast');
+    }
+
+    function switchTab(tab) {
+        currentTab = tab;
+        document.getElementById('tab-shop').classList.remove('active');
+        document.getElementById('tab-missions').classList.remove('active');
+        
+        if(tab === 'shop') {
+            document.getElementById('tab-shop').classList.add('active');
+            renderShop();
+        } else {
+            document.getElementById('tab-missions').classList.add('active');
+            renderMissions();
+        }
+    }
+
+    function getCurrentMaxCapacity() {
+        let capacity = maxBarnCapacity;
+        if (activeBoosters.bottomlessSilo > 0) {
+            capacity += 150;
+        }
+        return capacity;
+    }
+
+    function getTotalStock() {
+        return grainStock.Soja + grainStock.Milho + grainStock.Trigo + grainStock.Arroz + grainStock.Café;
+    }
+
+    function generateAvailableMissions() {
+        if (availableMissions.length > 0 || activeMission !== null) return;
+
+        const targets = [
+            { country: "China 🇨🇳", grain: "Soja", baseSacas: 25, reward: 200 },
+            { country: "Argentina 🇦🇷", grain: "Milho", baseSacas: 30, reward: 180 },
+            { country: "Alemanha 🇩🇪", grain: "Trigo", baseSacas: 20, reward: 150 },
+            { country: "Itália 🇮🇹", grain: "Arroz", baseSacas: 25, reward: 210 },
+            { country: "França 🇫🇷", grain: "Café", baseSacas: 12, reward: 290 },
+            { country: "Estados Unidos 🇺🇸", grain: "Café", baseSacas: 18, reward: 400 }
+        ];
+
+        let shuffled = targets.sort(() => 0.5 - Math.random());
+        availableMissions = [];
+        let levelScale = Math.max(1, Math.floor(months / 6));
+
+        for(let i=0; i<3; i++) {
+            availableMissions.push({
+                id: i,
+                country: shuffled[i].country,
+                grain: shuffled[i].grain,
+                requiredSacas: shuffled[i].baseSacas * levelScale,
+                reward: shuffled[i].reward * levelScale,
+                deadline: months + 8
+            });
+        }
+    }
+
+    function renderMissions() {
+        let html = `<h2>🚢 Contratos Comerciais</h2>`;
+
+        if (activeMission) {
+            let mesesRestantes = activeMission.deadline - months;
+            if (mesesRestantes < 0) mesesRestantes = 0;
+
+            html += `
+                <div class="mission-card">
+                    <strong style="color:var(--primary);">CONTRATO ATIVO</strong><br>
+                    <strong>Destino:</strong> ${activeMission.country}<br>
+                    <strong>Exigência:</strong> ${activeMission.requiredSacas} t de ${activeMission.grain}<br>
+                    <strong>Seu Estoque:</strong> ${grainStock[activeMission.grain]} t<br>
+                    <strong>Prazo:</strong> Expira no mês ${activeMission.deadline} (${mesesRestantes} meses restantes)<br>
+                    <strong>Pagamento:</strong> <span style="font-weight:bold;">+$${activeMission.reward} moedas</span>
+                    
+                    <button class="btn-mission-action" onclick="completeActiveMission()" ${grainStock[activeMission.grain] >= activeMission.requiredSacas ? '' : 'disabled'}>
+                        ${grainStock[activeMission.grain] >= activeMission.requiredSacas ? '📦 Entregar Produção' : 'Faltam Toneladas no Estoque'}
+                    </button>
+                </div>
+            `;
+        } else {
+            html += `<p style="text-align:center; font-size:0.9rem; margin-bottom:10px; color:var(--text-on-primary);">Escolha e aceite um contrato comercial:</p>`;
+            availableMissions.forEach(m => {
+                html += `
+                    <div class="mission-card" style="margin-bottom: 8px;">
+                        <strong>🚢 Destino: ${m.country}</strong><br>
+                        Pedido: ${m.requiredSacas} t de ${m.grain}<br>
+                        Recompensa: <strong>$${m.reward} moedas</strong><br>
+                        Prazo Limite: Mês ${m.deadline}<br>
+                        <button class="btn-mission-action" onclick="acceptMission(${m.id})">🤝 Aceitar Contrato</button>
+                    </div>
+                `;
+            });
+        }
+        sidebarDynamicContent.innerHTML = html;
+    }
+
+    function acceptMission(id) {
+        let selected = availableMissions.find(m => m.id === id);
+        activeMission = { ...selected };
+        availableMissions = [];
+        log(`[CONTRATO] Você aceitou exportar para ${activeMission.country}. Entregue a quantidade contratada antes do prazo!`);
+        renderMissions();
+    }
+
+    function completeActiveMission() {
+        if (!activeMission) return;
+        
+        if (grainStock[activeMission.grain] >= activeMission.requiredSacas) {
+            grainStock[activeMission.grain] -= activeMission.requiredSacas;
+            let finalReward = activeMission.reward;
+            if (activeBoosters.marketDay > 0) {
+                finalReward = Math.floor(finalReward * 1.25);
+            }
+            money += finalReward;
+            soilHealth = Math.min(100, soilHealth + 10);
+            log(`<span class="success-alert">[CONTRATO CONCLUÍDO] Exportação realizada para ${activeMission.country}! +$${finalReward} moedas recebidas.</span>`);
+            activeMission = null;
+            generateAvailableMissions();
+            if (currentTab === 'missions') renderMissions();
+            updateUI();
+        }
+    }
+
+    function renderShop() {
+        let html = "<h2>🛒 Loja Integrada</h2>";
+        
+        let b = upgrades.barn;
+        let nextPrice = b.prices[b.level];
+        let totalCurrentStock = getTotalStock();
+        let maxCap = getCurrentMaxCapacity();
+        
+        if (totalCurrentStock >= maxCap && (money < nextPrice || b.level >= b.maxLevel)) {
+            let totalSacasParaVenda = Math.floor(totalCurrentStock * 0.5);
+            html += `
+                <button class="btn-shop btn-emergency" onclick="triggerEmergencySale()">
+                    <strong>🚨 VENDA DE EMERGÊNCIA EXTERIOR</strong>
+                    <span style="font-size:0.8rem; margin: 2px 0;">Vende metade do celeiro (${totalSacasParaVenda} toneladas) por preço simbólico para liberar espaço!</span>
+                    <span class="price">Recebe: +$${totalSacasParaVenda} moedas</span>
+                </button>
+            `;
+        }
+
+        html += `<div class="shop-section-title">🧱 Upgrades Permanentes</div>`;
+
+        if (b.level >= b.maxLevel) {
+            html += `
+                <button class="btn-shop" disabled>
+                    <strong>✅ ${b.title} (Nível Máx.)</strong>
+                    <span class="price">Capacidade Máxima: 500 toneladas</span>
+                </button>
+            `;
+        } else {
+            let nextCapacity = b.capacities[b.level];
+            let canBuyBarn = money >= nextPrice;
+            html += `
+                <button class="btn-shop" onclick="buyBarnUpgrade()" ${canBuyBarn ? '' : 'disabled'}>
+                    <strong>🛒 ${b.title} - Nível ${b.level + 1}</strong>
+                    <span style="font-size:0.8rem; margin: 2px 0; opacity: 0.9;">${b.desc} Expande permanentemente para até ${nextCapacity} toneladas.</span>
+                    <span class="price">Custo: $${nextPrice}</span>
+                </button>
+            `;
+        }
+
+        for (let key in upgrades) {
+            if (key === 'barn') continue;
+            let item = upgrades[key];
+            if (item.purchased) {
+                html += `
+                    <button class="btn-shop" disabled>
+                        <strong>✅ ${item.title}</strong>
+                        <span class="price">Adquirido permanentemente</span>
+                    </button>
+                `;
+            } else {
+                let canBuy = money >= item.price;
+                html += `
+                    <button class="btn-shop" onclick="buyUpgrade('${key}')" ${canBuy ? '' : 'disabled'}>
+                        <strong>🛒 ${item.title}</strong>
+                        <span style="font-size:0.8rem; margin: 2px 0; opacity: 0.9;">${item.desc}</span>
+                        <span class="price">Custo: $${item.price}</span>
+                    </button>
+                `;
+            }
+        }
+
+        html += `<div class="shop-section-title">⚡ Boosters Temporários</div>`;
+        
+        for (let key in boostersDef) {
+            let item = boostersDef[key];
+            let isActive = activeBoosters[key] > 0;
+            let canBuy = money >= item.price && !isActive;
+            
+            html += `
+                <button class="btn-booster" onclick="buyBooster('${key}')" ${canBuy ? '' : 'disabled'}>
+                    <strong>${item.title} ${isActive ? '(Ativo: ' + activeBoosters[key] + 'm)' : ''}</strong>
+                    <span style="font-size:0.8rem; margin: 2px 0; opacity: 0.9;">${item.desc} Duração: ${item.duration} meses.</span>
+                    <span class="price">${isActive ? 'Já em execução' : 'Custo: $' + item.price}</span>
+                </button>
+            `;
+        }
+
+        sidebarDynamicContent.innerHTML = html;
+    }
+
+    function buyBooster(key) {
+        let item = boostersDef[key];
+        if (money >= item.price && activeBoosters[key] <= 0) {
+            money -= item.price;
+            activeBoosters[key] = item.duration;
+            log(`<span class="booster-alert">[BOOSTER] Ativado: <strong>${item.title}</strong> por ${item.duration} meses!</span>`);
+            updateUI();
+        }
+    }
+
+    function triggerEmergencySale() {
+        let reduzidos = 0;
+        for (let crop in grainStock) {
+            let total = grainStock[crop];
+            grainStock[crop] = Math.floor(total / 2);
+            reduzidos += (total - grainStock[crop]);
+        }
+        money += reduzidos;
+        log(`<span class="success-alert">[ESVAZIAMENTO] Foram vendidas ${reduzidos} toneladas a preço de custo emergencial! +$${reduzidos} obtidos.</span>`);
+        updateUI();
+    }
+
+    function buyBarnUpgrade() {
+        let b = upgrades.barn;
+        let price = b.prices[b.level];
+        if (money >= price && b.level < b.maxLevel) {
+            money -= price;
+            maxBarnCapacity = b.capacities[b.level];
+            b.level++;
+            log(`[CELEIRO] Upgrade comprado! Capacidade expandida para <strong>${maxBarnCapacity} toneladas</strong> permanente.`);
+            updateUI();
+        }
+    }
+
+    function buyUpgrade(key) {
+        let item = upgrades[key];
+        if (money >= item.price) {
+            money -= item.price;
+            item.purchased = true;
+            techProfitBonus += 0.33; 
+            log(`[LOJA] Adquirido: <strong>${item.title}</strong> permanente!`);
+            if (key === 'tools') baseProduction += 4;
+            updateUI();
+        }
+    }
+
+    function updateUI() {
+        monthsEl.innerText = months;
+        moneyEl.innerText = money;
+        productionEl.innerText = baseProduction;
+        soilTextEl.innerText = soilHealth + '%';
+        soilBarEl.style.width = soilHealth + '%';
+        carbonTextEl.innerText = carbonEmissions + ' kg CO₂'; 
+        
+        let totalCurrentStock = getTotalStock();
+        let maxCap = getCurrentMaxCapacity();
+        barnCapacityTextEl.innerText = `${totalCurrentStock} / ${maxCap} t`;
+        stockTextEl.innerText = `Soja: ${grainStock.Soja} t | Milho: ${grainStock.Milho} t | Trigo: ${grainStock.Trigo} t | Arroz: ${grainStock.Arroz} t | Café: ${grainStock.Café} t`;
+
+        let boostersList = [];
+        if (activeBoosters.marketDay > 0) boostersList.push(`Feira (${activeBoosters.marketDay}m)`);
+        if (activeBoosters.bottomlessSilo > 0) boostersList.push(`Silo (+150 cap) (${activeBoosters.bottomlessSilo}m)`);
+        if (activeBoosters.infiniteWell > 0) boostersList.push(`Poço (-50% taxa) (${activeBoosters.infiniteWell}m)`);
+        if (activeBoosters.luckySeed > 0) boostersList.push(`Sorte (x2 Crop) (${activeBoosters.luckySeed}m)`);
+        
+        boostersPanelText.innerText = boostersList.length > 0 ? `⚡ Boosters Ativos: ${boostersList.join(' | ')}` : "⚡ Boosters Ativos: Nenhum";
+
+        if (soilHealth < 40) {
+            soilBarEl.className = "progress-bar soil-bad";
+        } else {
+            soilBarEl.className = "progress-bar soil-good";
+        }
+
+        if (selectedGrain === 'Soja') farmCropEl.innerText = "🌿";
+        else if (selectedGrain === 'Milho') farmCropEl.innerText = "🌽";
+        else if (selectedGrain === 'Trigo') farmCropEl.innerText = "🌾";
+        else if (selectedGrain === 'Arroz') farmCropEl.innerText = "🍚";
+        else if (selectedGrain === 'Café') farmCropEl.innerText = "☕🫘";
+        else farmCropEl.innerText = "🌱";
+
+        if(currentTab === 'shop') renderShop();
+        else renderMissions();
+
+        if (money <= 0) {
+            log("<span class='danger-alert'>[FALÊNCIA] Dinheiro zerado! Reiniciando...</span>");
+            disableButtons();
+            setTimeout(resetGame, 5000);
+        }
+    }
+
+    function log(message) {
+        logEl.innerHTML += `<div>${message}</div>`;
+        logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function disableButtons() {
+        const buttons = document.querySelectorAll('.choices-container button');
+        buttons.forEach(btn => btn.disabled = true);
+    }
+
+    function updateGameFlow() {
+        if (selectedGrain === "" || monthsSinceLastGrainChoice >= 6) {
+            showGrainChoices();
+        } else {
+            showManagementChoices();
+        }
+    }
+
+    function showGrainChoices() {
+        stepInstruction.innerText = "Passo 1: Escolha a Cultura para Plantar";
+        
+        let htmlButtons = `
+            <button class="btn-grain" onclick="selectGrain('Soja')">🌱 Plantar Soja (Alta demanda)</button>
+            <button class="btn-grain" onclick="selectGrain('Milho')">🌽 Plantar Milho (Equilibrado)</button>
+            <button class="btn-grain" onclick="selectGrain('Trigo')">🌾 Plantar Trigo (Resistente)</button>
+            <button class="btn-grain" onclick="selectGrain('Arroz')">🍚 Plantar Arroz (Estável)</button>
+        `;
+        
+        if (soilHealth >= 60) {
+            htmlButtons += `<button class="btn-grain" onclick="selectGrain('Café')">☕ Plantar Café Gourmet (Altíssimo lucro)</button>`;
+        } else {
+            htmlButtons += `<button class="btn-grain" disabled style="opacity:0.5;">☕ Café Gourmet bloqueado (Solo necessário >60%)</button>`;
+        }
+        
+        choicesBox.innerHTML = htmlButtons;
+    }
+
+    function selectGrain(grain) {
+        selectedGrain = grain;
+        monthsSinceLastGrainChoice = 0; 
+        log(`[Mês ${months}] Cultura definida: <strong>${grain}</strong>.`);
+        updateUI();
+        showManagementChoices();
+    }
+
+    function showManagementChoices() {
+        let mesesRestantes = 6 - monthsSinceLastGrainChoice;
+        let infoTrava = (monthsSinceLastGrainChoice === 0) ? `(Cultivo fixado por 6 meses)` : `(Troca livre em ${mesesRestantes} meses)`;
+        stepInstruction.innerHTML = `Passo 2: Escolha o Manejo para o(a) <strong>${selectedGrain}</strong> <span style="font-size:0.85rem; font-weight:normal; color:#666;">${infoTrava}</span>`;
+        
+        choicesBox.innerHTML = `
+            <button onclick="makeDecision('convencional')">🚜 Manejo Convencional Intenso (Alto lucro imediato, desgasta solo e emite muito CO₂)</button>
+            <button onclick="makeDecision('bioinsumos')">🌱 Aplicar Bioinsumos e Organominerais (Regenera o solo, baixa emissão de CO₂)</button>
+            <button onclick="makeDecision('ilpf')">🌳 Sistema ILPF / Rotação (Grande bônus ecológico e sequestra CO₂ do ar)</button>
+        `;
+    }
+
+    function makeDecision(choice) {
+        let currentProduction = baseProduction;
+        let eventTriggered = false;
+
+        if (soilHealth < 50) {
+            if (Math.random() > 0.5) {
+                const isPest = Math.random() > 0.5;
+                let lossFactor = 0.3;
+                
+                if (isPest && upgrades.greenhouse.purchased) {
+                    lossFactor = 0.65;
+                    log(`<span class="danger-alert">[EVENTO] Pragas controladas pela Estufa!</span>`);
+                } else if (!isPest && upgrades.agrotech.purchased) {
+                    lossFactor = 1.0;
+                    log(`<span class="success-alert">[AGROTECH] Sensores mitigaram a Seca com gotejamento!</span>`);
+                } else if (!isPest && upgrades.irrigation.purchased) {
+                    lossFactor = 0.65;
+                    log(`<span class="danger-alert">[EVENTO] Seca! Irrigação atenuou perdas.</span>`);
+                } else {
+                    log(`<span class="danger-alert">[EVENTO] Problemas climáticos ou pragas reduziram os rendimentos!</span>`);
+                    currentProduction = Math.floor(currentProduction * lossFactor);
+                }
+                eventTriggered = true;
+            }
+        }
+
+        let grainMultiplier = 1.0;
+        if (selectedGrain === 'Soja') grainMultiplier = 1.2;
+        if (selectedGrain === 'Trigo') grainMultiplier = 0.8;
+        if (selectedGrain === 'Arroz') grainMultiplier = 1.0;
+        if (selectedGrain === 'Café') grainMultiplier = 2.0;
+
+        if (activeBoosters.luckySeed > 0 && Math.random() <= 0.10) {
+            currentProduction *= 2;
+            log(`<span class="booster-alert">[SORTE] O Booster semente de sorte ativou! Colheita duplicada!</span>`);
+        }
+
+        let profit = 0;
+        let harvestedSacas = currentProduction; 
+
+        let maxCap = getCurrentMaxCapacity();
+        let totalCurrentStock = getTotalStock();
+        if (totalCurrentStock + harvestedSacas > maxCap) {
+            let spaceAvailable = maxCap - totalCurrentStock;
+            if(spaceAvailable <= 0) {
+                harvestedSacas = 0;
+                log(`<span class="danger-alert">[CELEIRO CHEIO] Nenhum espaço disponível! Venda emergencial necessária na loja.</span>`);
+            } else {
+                harvestedSacas = spaceAvailable;
+                log(`<span class="danger-alert">[CELEIRO QUASE CHEIO] Apenas ${harvestedSacas} toneladas puderam ser armazenadas.</span>`);
+            }
+        }
+
+        if (choice === 'convencional') {
+            profit = Math.floor(((harvestedSacas * 2.5) * grainMultiplier) * techProfitBonus); 
+            if (eventTriggered && !upgrades.greenhouse.purchased && !upgrades.irrigation.purchased && !upgrades.agrotech.purchased) profit = Math.floor(profit * 0.3);
+            
+            if (activeBoosters.marketDay > 0) profit = Math.floor(profit * 1.25);
+            
+            money += profit;
+            let soilDamage = (selectedGrain === 'Café') ? 35 : 25;
+            soilHealth = Math.max(0, soilHealth - soilDamage);
+            
+            let emitted = harvestedSacas * 12;
+            carbonEmissions += emitted;
+
+            acumuladoConvencional++; 
+            monthsSinceLastGrainChoice++;
+            log(`[Mês ${months}] Manejo Convencional em ${selectedGrain}. Venda: +$${profit}.`);
+            log(`<span class="carbon-alert">💨 [EMISSÃO] O uso de maquinário intenso e fertilizantes emitiu <strong>${emitted} kg de CO₂</strong>!</span>`);
+            
+        } else if (choice === 'bioinsumos') {
+            profit = Math.floor((harvestedSacas * grainMultiplier) * techProfitBonus);
+            if (activeBoosters.marketDay > 0) profit = Math.floor(profit * 1.25);
+            money += profit;
+            soilHealth = Math.min(100, soilHealth + 10); 
+            
+            let emitted = harvestedSacas * 2;
+            carbonEmissions += emitted;
+
+            monthsSinceLastGrainChoice++;
+            log(`[Mês ${months}] Bioinsumos aplicados em ${selectedGrain}. Venda: +$${profit}.`);
+            log(`<span class="carbon-alert">💨 [EMISSÃO] Manejo sustentável equilibrado. Emissão muito baixa: <strong>${emitted} kg de CO₂</strong>.</span>`);
+            
+        } else if (choice === 'ilpf') {
+            profit = Math.floor(((harvestedSacas * 0.8) * grainMultiplier) * techProfitBonus);
+            if (activeBoosters.marketDay > 0) profit = Math.floor(profit * 1.25);
+            money += profit;
+            soilHealth = Math.min(100, soilHealth + 30); 
+            
+            let sequestered = harvestedSacas * 8;
+            carbonEmissions = Math.max(0, carbonEmissions - sequestered);
+
+            monthsSinceLastGrainChoice = 6; 
+            log(`[Mês ${months}] Rotação ILPF. Venda: +$${profit}.`);
+            log(`<span class="success-alert">🌳 [CARBONO ZERO] O sistema de árvores sequestrou e limpou <strong>${sequestered} kg de CO₂</strong> da atmosfera!</span>`);
+        }
+
+        if (harvestedSacas > 0) {
+            grainStock[selectedGrain] += harvestedSacas;
+            log("🎒 [ESTOQUE] +" + harvestedSacas + " toneladas salvas.");
+        }
+
+        if (soilHealth > 80) baseProduction += 1;
+        
+        months++;
+        for (let b in activeBoosters) {
+            if (activeBoosters[b] > 0) {
+                activeBoosters[b]--;
+                if(activeBoosters[b] === 0) {
+                    log(`<span class="danger-alert">[BOOSTER] O efeito temporário do booster expirou!</span>`);
+                }
+            }
+        }
+
+        if (activeMission && months > activeMission.deadline) {
+            let penaltyCost = Math.floor(activeMission.reward * 0.5);
+            money = Math.max(0, money - penaltyCost);
+            log(`<span class='danger-alert'>[MULTA] Contrato comercial expirado! Multa aplicada: -$${penaltyCost}</span>`);
+            activeMission = null;
+            generateAvailableMissions();
+        }
+
+        if ((months - 1) % 3 === 0) {
+            let baseMaintenance = upgrades.agrotech.purchased ? 10 : 30; 
+            let maintenanceCost = baseMaintenance;
+            
+            if (acumuladoConvencional > 1) {
+                let extraCost = (acumuladoConvencional * (baseProduction * 2));
+                if (upgrades.agrotech.purchased) extraCost = Math.floor(extraCost * 0.5); 
+                maintenanceCost += extraCost; 
+            }
+            
+            if (activeBoosters.infiniteWell > 0) {
+                maintenanceCost = Math.floor(maintenanceCost * 0.5);
+                log(`<span class="booster-alert">[POÇO INFINITO] Reduziu as despesas de água e manutenção trimestral em 50%!</span>`);
+            }
+
+            money -= maintenanceCost;
+            log(`<span style="color: #ff5722;">[CUSTO TRIMESTRAL] Manutenção de infraestrutura e taxas deduzidas: -$${maintenanceCost}</span>`);
+            acumuladoConvencional = 0; 
+        }
+
+        generateAvailableMissions();
+        updateUI();
+        if (money > 0) {
+            updateGameFlow();
+        }
+    }
+
+    function resetGame() {
+        months = 1; money = 100; soilHealth = 100; baseProduction = 10; carbonEmissions = 0;
+        selectedGrain = ""; monthsSinceLastGrainChoice = 0; acumuladoConvencional = 0; techProfitBonus = 1.0;
+        barnLevel = 0; maxBarnCapacity = 300; upgrades.barn.level = 0;
+        grainStock = { Soja: 0, Milho: 0, Trigo: 0, Arroz: 0, Café: 0 };
+        activeMission = null; availableMissions = [];
+        for (let b in activeBoosters) activeBoosters[b] = 0;
+        for (let u in upgrades) if(u !== 'barn') upgrades[u].purchased = false;
+        logEl.innerHTML = "<div>[Mês 1] O jogo foi reiniciado!</div>";
+        generateAvailableMissions();
+        updateGameFlow();
+        updateUI();
+    }
+
+    generateAvailableMissions();
+    updateGameFlow();
+    updateUI();
+</script>
+</body>
+</html>

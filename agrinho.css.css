@@ -1,0 +1,227 @@
+/* ==========================================
+   VARIÁVEIS DE CORES E CONFIGURAÇÕES GERAIS
+   ========================================== */
+:root {
+    --primary: #2e7d32;         /* Verde escuro (Sucesso/Sustentável) */
+    --primary-light: #4caf50;   /* Verde claro (Solo saudável) */
+    --danger: #d32f2f;          /* Vermelho (Crítico/Desastres/Custos) */
+    --dark: #333333;            /* Cor do texto principal */
+    --light: #f5f5f5;           /* Fundo dos painéis */
+    --bg-game: #e8f5e9;         /* Fundo da página (Verde folha suave) */
+}
+
+/* Reset básico e centralização do jogo na tela */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-game);
+    color: var(--dark);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   CONTAINER PRINCIPAL DO JOGO
+   ========================================== */
+.game-container {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    max-width: 600px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: var(--primary);
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+/* ==========================================
+   PAINEL DE STATUS (MOEDAS, MESES, ETC.)
+   ========================================== */
+.status-panel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Divide em duas colunas iguais */
+    gap: 15px;
+    background: var(--light);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.status-item {
+    font-size: 1.05rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra de progresso da Saúde do Solo */
+.progress-bar-container {
+    background-color: #e0e0e0;
+    border-radius: 6px;
+    height: 12px;
+    width: 100%;
+    margin-top: 6px;
+    overflow: hidden; /* Garante que a barra interna respeite as bordas arredondadas */
+}
+
+.progress-bar {
+    height: 100%;
+    width: 100%;
+    transition: width 0.5s ease-in-out, background-color 0.3s ease;
+}
+
+/* Cores dinâmicas da barra de solo via JavaScript */
+.soil-good {
+    background-color: var(--primary-light);
+}
+
+.soil-bad {
+    background-color: var(--danger);
+    animation: pulse 1.5s infinite; /* Efeito piscante para solo crítico */
+}
+
+/* ==========================================
+   CAMPO VISUAL DA FAZENDA
+   ========================================== */
+#farm-field {
+    background-color: #c8e6c9; /* Terra fértil e verde */
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 2px solid #a5d6a7;
+    transition: all 0.5s ease-in-out;
+}
+
+#farm-crop {
+    display: inline-block;
+    font-size: 3rem; /* Tamanho inicial */
+    transition: all 0.5s ease-in-out;
+}
+
+/* Estados da Fazenda de acordo com o solo */
+.farm-soil-bad {
+    background-color: #d7ccc8 !important; /* Terra seca/marrom */
+    border-color: #bcaaa4 !important;
+}
+
+/* ==========================================
+   MURAL DE ACONTECIMENTOS (LOG DE EVENTOS)
+   ========================================== */
+.log-box {
+    background: #2c3e50; /* Azul escuro estilo console */
+    color: #ecf0f1;
+    padding: 15px;
+    border-radius: 8px;
+    height: 140px;
+    overflow-y: auto; /* Adiciona scroll se as mensagens passarem do limite */
+    margin-bottom: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    border-left: 5px solid var(--primary);
+}
+
+/* Customização da barra de rolagem do Log */
+.log-box::-webkit-scrollbar {
+    width: 6px;
+}
+.log-box::-webkit-scrollbar-thumb {
+    background: #7f8c8d;
+    border-radius: 3px;
+}
+
+/* Estilos especiais para dentro do Log */
+.danger-alert {
+    color: #ffcdd2;
+    background: var(--danger);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* ==========================================
+   BOTÕES DE DECISÃO
+   ========================================== */
+.choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.2s ease;
+    text-align: left; /* Alinha o texto das ações à esquerda */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+}
+
+button:hover {
+    background-color: #1b5e20;
+    transform: translateY(-1px); /* Leve efeito de subir ao passar o mouse */
+}
+
+button:active {
+    transform: translateY(1px); /* Efeito de clique */
+}
+
+button:disabled {
+    background-color: #b0bec5;
+    color: #eceff1;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ==========================================
+   ANIMAÇÕES E RESPONSIVIDADE
+   ========================================== */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* CORREÇÃO: O balanço agora ocorre a partir da base inferior central (raiz) */
+@keyframes sway {
+    0% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+    100% { transform: rotate(-3deg); }
+}
+
+.swaying {
+    animation: sway 2.5s infinite ease-in-out;
+    transform-origin: bottom center; /* Fixa a base do emoji no chão */
+}
+
+/* Ajustes para telas pequenas de celular */
+@media (max-width: 480px) {
+    .status-panel {
+        grid-template-columns: 1fr; /* Vira apenas 1 coluna em telas pequenas */
+    }
+    body {
+        padding: 10px;
+    }
+    h1 {
+        font-size: 1.6rem;
+    }
+}
